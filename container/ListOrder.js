@@ -10,13 +10,12 @@ function ListOrder() {
         setArrX(state?.listFood.slice(0,4))
     }, [state])
     );
-    console.log(arrX);
     return (
         <View style={{ width: Dimensions.get('window').width * 0.3, marginHorizontal: 15, position: 'relative' }}>
             <NavFood category='Order Menu' />
-           {arrX ?  <ScrollView horizontal={false} >
+           {arrX.length > 0 ?  <ScrollView horizontal={false} >
                 {arrX.map((item, index) => (
-                    <OrderFood key={index} />
+                    <OrderFood key={index}  />
                 ))
                 }
             </ScrollView> : <Text style={{fontSize: 30, top: 250, left: 50}}>Nothing in Order Menu</Text>}

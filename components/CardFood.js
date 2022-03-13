@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Image, Text } from "react-native";
 import { Card, CheckBox, Icon, Rating } from "react-native-elements";
 import { Button } from "react-native-elements/dist/buttons/Button";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setFoodOrdered } from "../store/Module.action";
 function CardFood(props) {
   const { name, id } = props;
   const [check, setCheck] = useState(false);
   const [data, setData] = useState([]);
+  const listFood = useSelector((state) => state?.listFood);
   const dispatch = useDispatch();
   const handleCheck = () => {
-    if (!check) {
-      dispatch(setFoodOrdered({ name: name, id: id, quanity: 1 }))
-    }else{}
-    setCheck(!check)
+    setCheck(!check);
   }
+  useEffect(() => {
+    if (check) {
+      const newFood = { name: name, id: id, quanity: 1 }
+      dispatch(setFoodOrdered([...listFood, newFood]))
+    } else if (listFood.length > 0) {
+      const newData = listFood.filter(item => item.id != id);
+      //console.log(newData);
+      dispatch(setFoodOrdered(newData))
+    }
+  }, [check])
   return (
     <Card containerStyle={{
       borderColor: '#f5f5f5',
@@ -62,4 +70,4 @@ function CardFood(props) {
   );
 }
 
-export default CardFood;
+export default React.memo(CardFood);

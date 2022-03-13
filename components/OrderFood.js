@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Dimensions, Text, View } from 'react-native'
 import { Button, Card, Icon, Input } from 'react-native-elements'
 
-function OrderFood() {
+function OrderFood(props) {
     const [value, setValue] = useState(1);
     const handleRemove = () =>{
         console.log('remove');

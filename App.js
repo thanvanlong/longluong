@@ -1,29 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import { Button, Icon } from "react-native-elements";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import ListFood from "./container/ListFood";
 import { over } from 'stompjs';
 import SockJS from "sockjs-client";
-import SearchBars from "./components/SearchBars";
-import BannerFood from "./components/BannerFood";
-import CategoryFood from "./components/CategoryFood";
-import ListCategory from "./container/ListCategory";
-import OrderFood from "./components/OrderFood";
-import ListOrder from "./container/ListOrder";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./shell/Module.shell";
+import Home from "./container/Home";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BannerFood from "./components/BannerFood";
+import ListFood from "./container/ListFood";
+import SearchBars from "./components/SearchBars";
+import ContentFood from "./container/ContentFood";
+import ChildContent from "./container/ChildContent";
 let stompjs = null;
 export default function App() {
-  const [ip, setIp] = useState();
-  
-  useEffect(async () => {
-    // const res = await axios.get('https://fakestoreapi.com/products');
-    // console.log(res);
-    // register();
-    // getIp();
-  }, []);
   const getIp = async () => {
     const res = await fetch('http://192.168.1.5:8080/');
     const data = res.json();
@@ -51,27 +42,21 @@ export default function App() {
   const sendMessage = () => {
     stompjs.send('/app/private-message', {}, 'say hello')
   }
-  const w = Dimensions.get('window').width * 0.6;
+  const Stack = createNativeStackNavigator();
+  const arrCategory = ['Popular', 'Fast Food', 'Fruit'];
   return (
     <Provider store={store}>
-      <SafeAreaProvider style={{ backgroundColor: '#f5f5f5' }}>
-        <ScrollView>
-          <View>
-            <SearchBars />
-            <BannerFood />
-          </View>
-          <ListCategory />
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <View>
-              <ListFood category='Popular' />
-              <ListFood category='Fast food' />
-              <ListFood category='Fruit' />
-            </View>
-            <ListOrder />
-          </View>
-        </ScrollView>
-        <StatusBar style="auto" />
-      </SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+            {
+              arrCategory.map((item, index) => (
+                <Stack.Screen name={item} key={index} component={ListFood} />
+              ))
+            }
+          </Stack.Navigator>
+        </NavigationContainer>
+      
     </Provider>
   );
 }

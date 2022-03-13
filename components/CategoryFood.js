@@ -38,7 +38,8 @@ function CategoryFood(props) {
                         height: 25,
                         borderRadius: 50,
                     }}
-                    containerStyle={{ top: -150, left: 28 }} />
+                    containerStyle={{ top: -150, left: 28 }}
+                    onPress={onPress} />
             </Card>
         </TouchableOpacity>
     )

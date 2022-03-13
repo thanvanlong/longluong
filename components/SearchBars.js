@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import { SearchBar } from 'react-native-elements'
 import { View, StyleSheet, Dimensions } from 'react-native'
 function SearchBars() {
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SearchBars
+export default memo(SearchBars)

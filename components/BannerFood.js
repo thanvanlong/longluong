@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { ScrollView, Image, Dimensions } from 'react-native'
-function BannerFood() {
+function BannerFood(props) {
   const img = [
     '../assets/bannerfood1.jpg',
     '../assets/bannerfood1.jpg',
@@ -10,7 +10,7 @@ function BannerFood() {
     '../assets/bannerfood1.jpg',
     '../assets/bannerfood1.jpg',
     '../assets/bannerfood2.png'
-  ]
+  ];
   const w = Dimensions.get('window').width;
   const h = w * 0.2;
   return (
@@ -41,4 +41,4 @@ function BannerFood() {
   )
 }
 
-export default BannerFood
+export default memo(BannerFood)
