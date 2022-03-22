@@ -8,13 +8,16 @@ import { store } from "./shell/Module.shell";
 import Home from "./container/Home";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import BannerFood from "./components/BannerFood";
 import ListFood from "./container/ListFood";
-import SearchBars from "./components/SearchBars";
-import ContentFood from "./container/ContentFood";
-import ChildContent from "./container/ChildContent";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Router, Scene } from 'react-native-router-flux'
 let stompjs = null;
 export default function App() {
+  useEffect(() => {
+    //register();
+    //sendMessage();
+  }, [])
+  const [value, setValue] = useState();
   const getIp = async () => {
     const res = await fetch('http://192.168.1.5:8080/');
     const data = res.json();
@@ -23,32 +26,37 @@ export default function App() {
   const register = () => {
     let sockjs = new SockJS('http://192.168.31.209:8080/websocket')
     stompjs = over(sockjs);
+    stompjs.debug = false;
     stompjs.connect({}, onConnect, onError);
   }
   const onConnect = () => {
     console.log('connected');
-    stompjs.subscribe('/topic/test', (payload) => {
-      console.log(payload.body + ': log here');
-      Alert.alert(
-        'Log message',
-
-        JSON.stringify(payload.body)
-      )
+    stompjs.subscribe('/user/3/private', (payload) => {
+      //console.log(payload.body + ': log s');
+      setValue(payload.body);
     })
   }
   const onError = (e) => {
     console.log(e);
   }
+
+  const id = 3;
   const sendMessage = () => {
-    stompjs.send('/app/private-message', {}, 'say hello')
+    stompjs.send('/app/private-message/' + id, {},
+      JSON.stringify([{ name: 'Hamburger "Wanted"', id: 1, quanity: 2 }]))
   }
   const Stack = createNativeStackNavigator();
-  const arrCategory = ['Popular', 'Fast Food', 'Fruit'];
+  const arrCategory = ['Trending'];
   return (
     <Provider store={store}>
+      <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
             {
               arrCategory.map((item, index) => (
                 <Stack.Screen name={item} key={index} component={ListFood} />
@@ -56,7 +64,7 @@ export default function App() {
             }
           </Stack.Navigator>
         </NavigationContainer>
-      
+      </SafeAreaProvider>
     </Provider>
   );
 }

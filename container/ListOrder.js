@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react'
-import { Dimensions, ScrollView, View, Text } from 'react-native';
+import { Dimensions, ScrollView, View, Text, FlatList } from 'react-native';
 import NavFood from '../components/NavFood';
 import OrderFood from '../components/OrderFood';
-import { useSelector } from 'react-redux'
-function ListOrder() {
-    const arr = [1, 2, 3, 4, 5, 6];
-    const [arrX, setArrX] = useState([])
+import { useSelector } from 'react-redux';
+import { processListFood } from '../utils';
+function ListOrder(props) {
+    const [listFood, setListFood] = useState([])
     useSelector((state) => useEffect(() => {
-        setArrX(state?.listFood.slice(0,4))
-    }, [state])
-    );
+        setListFood(state?.listFood);
+    }, [state]))
+    // console.log('list order re-render');
+    // const originData = processListFood(listFood);
+    
+    // console.log(processListFood(listFood));
+    const renderItem = ({ item }) => {
+        return (
+            <OrderFood item={item} listFood={listFood} />
+        )
+    }
     return (
         <View style={{ width: Dimensions.get('window').width * 0.3, marginHorizontal: 15, position: 'relative' }}>
             <NavFood category='Order Menu' />
-           {arrX.length > 0 ?  <ScrollView horizontal={false} >
-                {arrX.map((item, index) => (
-                    <OrderFood key={index}  />
-                ))
-                }
-            </ScrollView> : <Text style={{fontSize: 30, top: 250, left: 50}}>Nothing in Order Menu</Text>}
+            <FlatList
+                data={listFood}
+                renderItem={renderItem}
+                horizontal={false}
+                keyExtractor={item => item.id}
+                numColumns={1}
+            />
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -37,4 +46,4 @@ function ListOrder() {
     )
 }
 
-export default ListOrder
+export default React.memo(ListOrder)

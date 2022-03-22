@@ -1,43 +1,57 @@
 import React, { memo } from 'react'
-import { ScrollView, Image, Dimensions } from 'react-native'
+import { ScrollView, Image, Dimensions, FlatList } from 'react-native'
 function BannerFood(props) {
   const img = [
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood1.jpg',
-    '../assets/bannerfood2.png'
+    {
+      id: 1,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 2,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 3,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 4,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 5,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 6,
+      img: require('../assets/bannerfood1.jpg')
+    },
+    {
+      id: 7,
+      img: require('../assets/bannerfood1.jpg')
+    },
   ];
   const w = Dimensions.get('window').width;
   const h = w * 0.2;
+  const renderItem = ({ item }) => {
+    return (
+      <Image
+        source={item.img}
+        style={{ width: w, height: h, borderWidth: 2, borderColor: '#e0e0e0', }}
+        resizeMode='cover'
+      />
+    )
+  }
   return (
-    <ScrollView
+    <FlatList 
+      data={img}
+      renderItem={renderItem}
       horizontal={true}
       pagingEnabled
-      style={{
-        width:  w - 20,
-        height: w * 0.2,
-        backgroundColor: '#FAF9FB',
-        paddingRight: 20,
-        zIndex:10,
-        marginLeft: 10,
-        overflow:'hidden'
-      }}
-      showsHorizontalScrollIndicator={false}>
-      {
-        img.map((item, index) => (
-          <Image
-            source={require('../assets/banner1.jpg')}
-            key={index}
-            style={{ width: w-20, height: h, borderWidth: 2,  borderColor: '#e0e0e0', }}
-            resizeMode='cover'
-          />
-        ))
-      }
-    </ScrollView>
+      keyExtractor={item => item.id}
+      style={{width: w}}
+      showsHorizontalScrollIndicator={false}
+    />
   )
 }
 

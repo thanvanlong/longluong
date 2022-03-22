@@ -1,121 +1,63 @@
 import React from 'react';
-import { Dimensions, FlatList, ListViewBase, ScrollView, View, Text } from 'react-native';
-import { useSelector } from 'react-redux';
+import { Dimensions, FlatList, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import CardFood from '../components/CardFood'
 import NavFood from '../components/NavFood';
-const arr = [
-    {
-        id: 1,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 2,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 3,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 4,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 5,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 6,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 7,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 8,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 9,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 10,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 11,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 12,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 13,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 14,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 15,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 16,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 17,
-        name: 'Burger "wanted"'
-    },
-    {
-        id: 18,
-        name: 'Burger "wanted"'
-    },
-    
-];
-const arr2 = arr.slice(0,4);
+import { setFoodOrdered } from '../store/Module.action';
+import { arr } from '../utils';
 function ListFood(props) {
+
+    const arr2 = arr.slice(0, 4);
     const { category, handleNav } = props;
+    const dispatch = useDispatch();
     const { route } = props;
+    console.log('re-render list food');
     const renderItems = ({ item }) => {
+        const handleClick = () => {
+            const newFood = { name: item.name, id: item.id, quanity: 1 }
+            dispatch(setFoodOrdered(newFood));
+        }
         return (
-            <CardFood name={item.name} id={item.id} />
+            <CardFood name={item.name} id={item.id} handleClick={handleClick} />
         );
     }
-    
     return (
         <>
             {route?.params?.check === true ?
-                <View style={{ height: 1000, width: Dimensions.get('window').width  }}>
+                <View style={{
+                    height: 1000,
+                    width: Dimensions.get('window').width,
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                     <FlatList
-                        data={arr}
+                        data={arr.slice(0, 4)}
                         renderItem={renderItems}
                         keyExtractor={item => item.id}
                         horizontal={false}
                         initialNumToRender={1}
-                        numColumns={1}
+                        numColumns={4}
+                        showsVerticalScrollIndicator={false}
                         style={{ backgroundColor: '#FAF9FB', paddingBottom: 50 }}
+
                     />
                 </View> :
                 <View style={{ height: 380, width: Dimensions.get('window').width * 0.65 }}>
                     <NavFood category={category} handleNav={handleNav} />
                     <FlatList
-                        data={arr}
+                        data={arr2}
                         renderItem={renderItems}
                         keyExtractor={item => item.id}
                         horizontal
+                        initialNumToRender={4}
                         showsHorizontalScrollIndicator={false}
                         style={{ backgroundColor: '#FAF9FB' }}
                     />
+                    {/* <Button title={'Click me'} onPress={props.onClick} /> */}
                 </View>}
 
         </>
     );
 }
 
-export default ListFood;
+export default React.memo(ListFood);

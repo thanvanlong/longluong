@@ -1,24 +1,33 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFoodOrdered } from '../store/Module.action';
 import ListFood from './ListFood';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ChildContent from './ChildContent';
-function ContentFood() {
-    const Stack = createNativeStackNavigator();
-    const arrCategory = ['Popular', 'Fast Food', 'Fruit'];
+import ListOrder from './ListOrder'
+function ContentFood({ navigation }) {
+    const arrCategory = ['Trending', 'Fast Food', 'Fruit'];
+    console.log('content re-render');
+
+    const renderItem = ({ item }) => {
+        return (
+            <ListFood
+                category={item}
+                handleNav={() => navigation.navigate(item, { name: item, check: true })}
+            />
+        )
+    }
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name='ChildContent' component={ChildContent} />
-                {
-                    arrCategory.map((item, index) => (
-                        <Stack.Screen name={item} key={index} component={ListFood} />
-                    ))
-                }
-            </Stack.Navigator>
-        </NavigationContainer>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <View>
+                <FlatList
+                    data={arrCategory}
+                    renderItem={renderItem}
+                    keyExtractor={item => item}
+                     />
+            </View>
+            <ListOrder />
+        </View>
     )
 }
 
-export default ContentFood
+export default React.memo(ContentFood)
