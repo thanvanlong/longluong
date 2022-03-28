@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { over } from 'stompjs';
 import SockJS from "sockjs-client";
 import { Provider, useSelector } from "react-redux";
@@ -10,7 +10,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ListFood from "./container/ListFood";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Router, Scene } from 'react-native-router-flux'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import BannerFood from "./components/BannerFood";
+import ListCategory from "./container/ListCategory";
 let stompjs = null;
 export default function App() {
   useEffect(() => {
@@ -45,21 +47,25 @@ export default function App() {
     stompjs.send('/app/private-message/' + id, {},
       JSON.stringify([{ name: 'Hamburger "Wanted"', id: 1, quanity: 2 }]))
   }
-  const Stack = createNativeStackNavigator();
-  const arrCategory = ['Trending'];
+  const Stack = createBottomTabNavigator();
+  const arrCategory = ['Trending','Fast Food'];
   return (
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen
               name="Home"
               component={Home}
-              options={{ headerShown: false }}
+              options={{ tabBarStyle: {height: 0}}}
             />
             {
               arrCategory.map((item, index) => (
-                <Stack.Screen name={item} key={index} component={ListFood} />
+                <Stack.Screen 
+                name={item} 
+                key={index} 
+                component={ListFood}
+                options={{tabBarStyle: {height: 0}}}  />
               ))
             }
           </Stack.Navigator>

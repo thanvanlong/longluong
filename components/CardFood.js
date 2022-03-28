@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Image, Text } from "react-native";
-import { Button, Card, CheckBox, Icon, Rating } from "react-native-elements";
+import { Button, Card, Icon, Rating } from "react-native-elements";
 function CardFood(props) {
   const { name, id, handleClick } = props;
-  console.log('card food re-render' );
   return (
     <Card containerStyle={{
       borderColor: '#f5f5f5',

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFoodOrdered } from '../store/Module.action';
 import ListFood from './ListFood';
 import ListOrder from './ListOrder'
-function ContentFood({ navigation }) {
+function ContentFood( ) {
     const arrCategory = ['Trending', 'Fast Food', 'Fruit'];
     console.log('content re-render');
 
@@ -12,7 +12,6 @@ function ContentFood({ navigation }) {
         return (
             <ListFood
                 category={item}
-                handleNav={() => navigation.navigate(item, { name: item, check: true })}
             />
         )
     }
