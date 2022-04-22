@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import { Button, Card, Icon } from 'react-native-elements'
 function CategoryFood(props) {

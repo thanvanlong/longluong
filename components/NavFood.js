@@ -5,8 +5,8 @@ function NavFood(props) {
     const { category, handleNav } = props;
     return (
         <Header leftComponent={
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <Text h4 h4Style={{ fontSize: 18 }}>{category}</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Text h4 h4Style={{ fontSize: 15 }}>{category}</Text>
                 <Icon
                     name='filter-outline'
                     type='ionicon'

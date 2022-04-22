@@ -20,7 +20,7 @@ function ListOrder(props) {
     }
     return (
         <View style={{ width: Dimensions.get('window').width * 0.3, marginHorizontal: 15, position: 'relative' }}>
-            <NavFood category='Order Menu' />
+            <NavFood category='Menu' />
             <FlatList
                 data={listFood}
                 renderItem={renderItem}

@@ -1,17 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFoodOrdered } from '../store/Module.action';
 import ListFood from './ListFood';
 import ListOrder from './ListOrder'
+import { category } from '../utils';
 function ContentFood( ) {
-    const arrCategory = ['Trending', 'Fast Food', 'Fruit'];
     console.log('content re-render');
 
     const renderItem = ({ item }) => {
         return (
             <ListFood
-                category={item}
+                category={item.name}
             />
         )
     }
@@ -19,9 +17,9 @@ function ContentFood( ) {
         <View style={{ display: 'flex', flexDirection: 'row' }}>
             <View>
                 <FlatList
-                    data={arrCategory}
+                    data={category}
                     renderItem={renderItem}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item.id}
                      />
             </View>
             <ListOrder />

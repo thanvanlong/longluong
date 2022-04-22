@@ -7,12 +7,11 @@ import { Provider, useSelector } from "react-redux";
 import { store } from "./shell/Module.shell";
 import Home from "./container/Home";
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ListFood from "./container/ListFood";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import BannerFood from "./components/BannerFood";
-import ListCategory from "./container/ListCategory";
+import ListFood_1 from "./container/ListFood_1";
+import { category } from './utils';
 let stompjs = null;
 export default function App() {
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function App() {
     Alert.alert('res', JSON.stringify(res));
   }
   const register = () => {
-    let sockjs = new SockJS('http://192.168.31.209:8080/websocket')
+    let sockjs = new SockJS('https://wsocketlong.herokuapp.com/websocket')
     stompjs = over(sockjs);
     stompjs.debug = false;
     stompjs.connect({}, onConnect, onError);
@@ -34,7 +33,6 @@ export default function App() {
   const onConnect = () => {
     console.log('connected');
     stompjs.subscribe('/user/3/private', (payload) => {
-      //console.log(payload.body + ': log s');
       setValue(payload.body);
     })
   }
@@ -48,24 +46,24 @@ export default function App() {
       JSON.stringify([{ name: 'Hamburger "Wanted"', id: 1, quanity: 2 }]))
   }
   const Stack = createBottomTabNavigator();
-  const arrCategory = ['Trending','Fast Food'];
+  const arrCategory = ['Trending', 'Fr Food', 'Fruit'];
   return (
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{headerShown: false}} >
+          <Stack.Navigator screenOptions={{ tabBarStyle: {height: 0}}} >
             <Stack.Screen
               name="Home"
               component={Home}
-              options={{ tabBarStyle: {height: 0}}}
+              options={{ headerShown: false }}
             />
             {
-              arrCategory.map((item, index) => (
-                <Stack.Screen 
-                name={item} 
-                key={index} 
-                component={ListFood}
-                options={{tabBarStyle: {height: 0}}}  />
+              category.map((item, index) => (
+                <Stack.Screen
+                  name={item.name}
+                  key={index}
+                  component={ListFood}
+                />
               ))
             }
           </Stack.Navigator>

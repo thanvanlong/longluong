@@ -1,56 +1,32 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Dimensions, FlatList,View } from 'react-native'
 import CategoryFood from '../components/CategoryFood';
-import NavFood from '../components/NavFood'
-const category = [
-    {
-        id: 1,
-        name: 'All',
-        img: require('../assets/cooking.png')
-    },
-    {
-        id: 2,
-        name: 'Fr Food',
-        img: require('../assets/pizza.png')
-    },
-    {
-        id: 3,
-        name: 'Ht Food',
-        img: require('../assets/salad.png')
-    },
-    {
-        id: 4,
-        name: 'Drink',
-        img: require('../assets/drink.png')
-    },
-    {
-        id: 5,
-        name: 'Hotpot',
-        img: require('../assets/hot-pot.png')
-    },
-    {
-        id: 6,
-        name: 'Hotpot',
-        img: require('../assets/hot-pot.png')
-    }
-];
+import NavFood from '../components/NavFood';
+import { category } from '../utils';
+import { NavContext } from './Home';
+
 function ListCategory() {
-    const [selected, setSelected] = useState(1)
+    const nav = useContext(NavContext);
+    const [selected, setSelected] = useState(1);
+    const count = Dimensions.get('window').width/125;
     const renderItems = ({ item }) => {
         const color1 = item.id == selected ? '#FB9300' : 'white';
         const color2 = item.id == selected ? 'white' : '#FB9300';
+        const handleNav = () =>{
+            nav.navigate(item.name);
+        }
         return (
             <CategoryFood
                 name={item.name}
                 img={item.img}
                 id={item.id}
-                onPress={() => setSelected(item.id)}
+                onPress={handleNav}
                 color1={color1}
                 color2={color2} />)
     }
 
     return (
-        <View style={{width: Dimensions.get('window').width * 0.65,}}>
+        <View style={{width: Dimensions.get('window').width ,}}>
             <NavFood category='Menu' />
             <FlatList
                 data={category}
@@ -60,7 +36,7 @@ function ListCategory() {
                 keyExtractor={item => item.id}
                 style={{
                     backgroundColor: '#FAF9FB',
-                    width: Dimensions.get('window').width * 0.65,
+                    width: Dimensions.get('window').width ,
                     paddingLeft: 18,
                 }}
             />

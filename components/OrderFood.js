@@ -56,7 +56,7 @@ function OrderFood(props) {
                 alignItems: 'center'
             }}>
                 <Card.Image source={require("../assets/hamberger.png")}
-                    containerStyle={{ width: 55 }}
+                    containerStyle={{ width: "50%" }}
                     resizeMode='center' />
             </View>
             <View style={{ marginHorizontal: 40, }}>
